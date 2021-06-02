@@ -1,0 +1,124 @@
+﻿<Page
+    x:Class="Files.SettingsPages.Preferences"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UserControls="using:Files.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:datamodels="using:Files.DataModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settingsviewmodels="using:Files.ViewModels.SettingsViewModels"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <settingsviewmodels:PreferencesViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel
+                Margin="12,12,8,8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Spacing="14">
+                <StackPanel.ChildrenTransitions>
+                    <TransitionCollection>
+                        <RepositionThemeTransition />
+                    </TransitionCollection>
+                </StackPanel.ChildrenTransitions>
+
+                <TextBlock
+                    x:Uid="SettingsPreferencesTitle"
+                    FontSize="20"
+                    FontWeight="Medium"
+                    Text="Preferences" />
+
+                <ComboBox
+                    x:Name="ComboAppLanguage"
+                    x:Uid="SettingsPreferencesAppLanguage"
+                    Width="200"
+                    HorizontalAlignment="Left"
+                    Header="App language"
+                    ItemsSource="{Binding DefaultLanguages}"
+                    SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="datamodels:DefaultLanguageModel">
+                            <TextBlock Text="{x:Bind Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <StackPanel Spacing="10">
+                    <StackPanel
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Spacing="14">
+                        <ComboBox
+                            x:Name="TerminalApplicationsComboBox"
+                            x:Uid="SettingsPreferencesTerminalApplications"
+                            Width="Auto"
+                            MinWidth="200"
+                            MaxWidth="250"
+                            Header="Terminal applications"
+                            ItemsSource="{Binding Terminals}"
+                            SelectedItem="{Binding SelectedTerminal, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="datamodels:Terminal">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <HyperlinkButton
+                            x:Uid="SettingsPreferencesEditTerminalApplications"
+                            VerticalAlignment="Bottom"
+                            AutomationProperties.Name="Edit terminal applications"
+                            Command="{Binding EditTerminalApplicationsCommand}"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontSize="14" Glyph="&#xE104;" />
+                        </HyperlinkButton>
+
+                        <HyperlinkButton
+                            x:Uid="SettingsPreferencesTerminalApplicationsSampleProfiles"
+                            VerticalAlignment="Bottom"
+                            AutomationProperties.Name="View sample profiles"
+                            NavigateUri="https://files-community.github.io/docs/#/articles/terminal-profiles"
+                            Style="{ThemeResource TextBlockButtonStyle}"
+                            ToolTipService.ToolTip="View sample profiles">
+                            <FontIcon FontSize="14" Glyph="&#xE946;" />
+                        </HyperlinkButton>
+                    </StackPanel>
+                </StackPanel>
+
+                <ToggleSwitch
+                    x:Uid="SettingsPreferencesRecycleBinSwitch"
+                    Header="Pin Recycle Bin to the sidebar"
+                    IsOn="{Binding PinRecycleBinToSideBar, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Name="ShowConfirmDeleteDialogSwitch"
+                    x:Uid="SettingsPreferencesShowConfirmDeleteDialogSwitch"
+                    Header="Show a confirmation dialog when deleting files or folders"
+                    IsOn="{Binding ShowConfirmDeleteDialog, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Name="ShowLibrarySection"
+                    x:Uid="SettingsPreferencesShowLibrarySection"
+                    Header="Show library section on the sidebar"
+                    IsOn="{Binding ShowLibrarySection, Mode=TwoWay}" />
+
+                <ToggleSwitch
+                    x:Name="OpenFoldersNewTab"
+                    x:Uid="SettingsPreferencesOpenFoldersNewTab"
+                    Header="Open folders in new tab"
+                    IsOn="{Binding OpenFoldersNewTab, Mode=TwoWay}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <UserControls:RestartControl
+            x:Name="RestartControl"
+            VerticalAlignment="Bottom"
+            ShowDialog="{Binding ShowRestartControl, Mode=TwoWay}" />
+    </Grid>
+</Page>
